@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) Sportradar AG. See LICENSE for full license governing this code
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sportradar.unifiedodds.example</groupId>
+    <artifactId>sdk-example</artifactId>
+    <name>Unified Odds Feed SDK - Examples and Tools</name>
+
+    <version>2.0.54.1</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <artifactId>unified-sdk</artifactId>
+            <groupId>com.sportradar.unifiedodds</groupId>
+            <version>2.0.54.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/lib/sportradar-odds-sdk-fatjar.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version>
+        </dependency>
+
+  <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>4.0.0</version>
+  </dependency>
+
+  <!-- JAXB RI, Jakarta XML Binding -->
+  <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>3.0.2</version>
+      <scope>runtime</scope>
+  </dependency>
+
+<dependency>
+    <groupId>com.pushtechnology.gateway</groupId>
+    <artifactId>gateway-framework</artifactId>
+    <version>0.13.0</version>
+</dependency>
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+    </dependencies>
+
+ <repositories>
+  <repository>
+    <id>push-repository</id>
+    <url>https://download.pushtechnology.com/maven/</url>
+  </repository>
+</repositories>
+
+
+
+</project>

@@ -1,0 +1,27 @@
+{
+  "id": "sportradar-source-adapter-1",
+  "diffusion": {
+    "url": "wss://diffusion-i0zwcx.eu.diffusion.cloud",
+    "principal": "betsoftware",
+    "password": "P455w0rd",
+    "reconnectIntervalMs": 5000
+  },
+  "services": [
+    {
+      "serviceName": "SingleServiceOddstreamingSource",
+      "serviceType": "STREAMING_ODDS_SOURCE",
+      "description": "Streaming Sportradar odds - all feeds - to server",
+      "config": {
+        "framework": {
+          "topicProperties": {
+            "timeSeries": false,
+            "persistencePolicy": "SERVER"
+          }
+        },
+        "application": {
+          "diffusionTopicName": "sportradar/feed"
+        }
+      }
+    }
+  ]
+}
