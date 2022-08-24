@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Executors;
@@ -64,11 +63,6 @@ public class SportradarDiffusionWriter implements OddsFeedListener {
     private final MarketDescriptionManager marketDescriptionManager;
 
     private Map<String, JSONObject> sportMap;
-    private Map<String, JSONObject> countryMap;
-    private Map<String, JSONObject> competitionMap;
-    private Map<String, JSONObject> eventMap;
-    private Map<String,  String>    sportCountries;
-    private Random                  random;
     private SimpleDateFormat        formatter;
     private TreeMap<Double, String> oddsMap;
     private JSONObject              FACupOdds;
@@ -88,14 +82,9 @@ public class SportradarDiffusionWriter implements OddsFeedListener {
         this.publisher          = inPublisher;
         this.logger             = LoggerFactory.getLogger(this.getClass().getName() + "-" + listener_version);
         this.sportMap       = new HashMap();
-        this.countryMap     = new HashMap(); //  All these value mappings are currently unused.
-        this.competitionMap = new HashMap(); //  They are kept as lookup value caches in case they
-        this.eventMap       = new HashMap(); //  are required in future.   Customer requirements
-        this.sportCountries = new HashMap(); //  are changing so that may bt the case.   If not,
         this.oddsMap        = new TreeMap(); //  they can be deleted.
         this.locale         = Locale.ENGLISH;
         this.FACupTopic     = "Sports/Soccer/ENG/FA Cup/FA Cup - Winner";
-        this.random         = new Random();
         this.formatter      = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         this.scheduler      = Executors.newScheduledThreadPool(1);
         this.randomisationStarted   = false;
@@ -141,7 +130,6 @@ public class SportradarDiffusionWriter implements OddsFeedListener {
      */
     @Override
     public void onOddsChange(OddsFeedSession sender, OddsChange<SportEvent> oddsChanges) {
-        String      feedRootTopic   = "Sportradar/";
         String      sportsRootTopic = "Sports/";
 
         // Now loop through the odds for each market
@@ -149,7 +137,6 @@ public class SportradarDiffusionWriter implements OddsFeedListener {
             // Now loop through the outcomes within this particular market
             String marketDescription = marketLine.getName();
             marketDescription = marketDescription.replace('/', ',');
-            String rawTopicName = feedRootTopic + marketDescription;
             logger.info("Received OddsChange for Producer {} (ID: {}).", oddsChanges.getProducer().getName(), oddsChanges.getProducer().getId());
 
             JSONObject  joMarketLine  = new JSONObject();
@@ -179,15 +166,6 @@ public class SportradarDiffusionWriter implements OddsFeedListener {
                     }
                 }
                 joMarketLine.put("Odds", outcomeOddsArray);
-
-                //Finally add specifiers
-                /*
-                JSONObject tmpSpecifierMap = new JSONObject();
-                for (Iterator<Map.Entry<String, String>> entries = marketLine.getSpecifiers().entrySet().iterator(); entries.hasNext(); ) {
-                    Map.Entry<String, String> entry = entries.next();
-                    tmpSpecifierMap.put(entry.getKey(),entry.getValue());
-                }
-                joMarketLine.put("Specifiers", tmpSpecifierMap);*/
             }
 
             joMarketLine.put("MarketLineID",    marketLine.getId());
@@ -203,9 +181,6 @@ public class SportradarDiffusionWriter implements OddsFeedListener {
                         String topic = eventTopic + "/" + marketLine.getName(locale);
                         logger.info("Published OddsChange to topic {}", topic);
                         publisher.publish(topic, joMarketLine);
-
-                        int initialDelay = 0;
-                        int delay = 5;
 
                         //BELOW IS NEEDED FOR TRACKING FA CUP AND RANDOMISING ITS DATA - SEE RANDOMISE FA CUP FUNCTION
                         if(topic.equals(FACupTopic)) {

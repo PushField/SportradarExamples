@@ -147,15 +147,9 @@ final class SportradarStreamingSourceHandler implements StreamingSourceHandler {
     public CompletableFuture<?> start() {
 
         try {
-            LOG.info("Setting recovery timestamp to 2hrs before");
             setProducersRecoveryTimestamp();
             LOG.info("Opening the feed instance");
             oddsFeed.open();
-            /*LOG.info("Fetching Sport Data");
-            diffusionWriter.fetchSportsData();
-            LOG.info("Fetching Market Mappings");
-            diffusionWriter.fetchMarketMappings();
-            LOG.info("Successfully obtained Sport Data.");*/
         }
         catch(InitException ex) {
             LOG.info("Unable to connect to Odds feed - {}", ex.getMessage());
